@@ -1,7 +1,5 @@
 from flask import Flask, render_template, make_response, request
 import base64
-import sys
-import logging
 import uuid
 
 from resources.game import game_api
@@ -23,18 +21,21 @@ def index():
 def fb():
     campaign = request.args.get('utm_campaign')
     content = request.args.get('utm_content')
+    term = request.args.get('utm_term')
 
-    app.logger.info('utm_campaign_log', campaign)
-    app.logger.info('utm_content_log', content)
+    # Encoded transparent image
+    GIF = 'R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
 
-    
-    if request.cookies.get('hlv_fb_imp'):
-        return "You have a cookie"
+    if request.cookies.get('viewtrack'):
+        user_id = request.cookies.get('viewtrack')
+        print([user_id, campaign, content, term, "exists"])
+        return base64.b64decode(GIF)
+
     else:
-        gif = 'R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-        res = make_response(base64.b64decode(gif))
-
-        res.set_cookie('hlv_fb_imp', str(uuid.uuid4()), max_age=60 * 60 * 24 * 365 * 2)
+        user_id = uuid.uuid4()
+        print([str(user_id), campaign, content, term, "new"])
+        res = make_response(base64.b64decode(GIF))
+        res.set_cookie('viewtrack', str(user_id), max_age=60 * 60 * 24 * 365 * 2)
         return res
 
 @app.errorhandler(404)
