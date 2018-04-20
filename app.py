@@ -17,7 +17,7 @@ def hangman():
 def index():
     return render_template('index.html')
 
-@app.route('/fb')
+@app.route('/fb.gif')
 def fb():
     campaign = request.args.get('utm_campaign')
     content = request.args.get('utm_content')
