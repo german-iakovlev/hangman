@@ -1,4 +1,4 @@
-from flask import Flask, request, Response
+from flask import Flask, render_template, make_response, request, Response
 import base64
 import uuid
 
