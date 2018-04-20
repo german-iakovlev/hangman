@@ -1,5 +1,8 @@
 from flask import Flask, render_template, make_response, request
 import base64
+import sys
+import logging
+import uuid
 
 from resources.game import game_api
 
@@ -18,13 +21,20 @@ def index():
 
 @app.route('/fb')
 def fb():
+    campaign = request.args.get('utm_campaign')
+    content = request.args.get('utm_content')
+
+    app.logger.info('utm_campaign_log', campaign)
+    app.logger.info('utm_content_log', content)
+
     
-    if request.cookies.get('cookie_fb'):
+    if request.cookies.get('foo'):
         return "You have a cookie"
     else:
         gif = 'R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
         res = make_response(base64.b64decode(gif))
-        res.set_cookie('cookie_fb', '12345', max_age=60 * 60 * 24 * 365 * 2)
+
+        res.set_cookie('foo', str(uuid.uuid4()), max_age=60 * 60 * 24 * 365 * 2)
         return res
 
 @app.errorhandler(404)
