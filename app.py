@@ -1,4 +1,4 @@
-from flask import Flask, render_template, make_response, request
+from flask import Flask, request, Response
 import base64
 import uuid
 
@@ -23,18 +23,23 @@ def fb():
     content = request.args.get('utm_content')
     term = request.args.get('utm_term')
 
-    # Encoded transparent image
-    GIF = 'R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    GIF = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=')
+
 
     if request.cookies.get('viewtrack'):
         user_id = request.cookies.get('viewtrack')
+        
         print([user_id, campaign, content, term, "exists"])
-        return base64.b64decode(GIF)
+        
+        return Response(GIF, mimetype="image/gif")
 
     else:
+        # Generate user id for the cookie
         user_id = uuid.uuid4()
+        
         print([str(user_id), campaign, content, term, "new"])
-        res = make_response(base64.b64decode(GIF))
+
+        res = Response(GIF, mimetype="image/gif")
         res.set_cookie('viewtrack', str(user_id), max_age=60 * 60 * 24 * 365 * 2)
         return res
 
