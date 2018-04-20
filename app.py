@@ -28,13 +28,13 @@ def fb():
     app.logger.info('utm_content_log', content)
 
     
-    if request.cookies.get('foo'):
+    if request.cookies.get('hlv_fb_imp'):
         return "You have a cookie"
     else:
         gif = 'R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
         res = make_response(base64.b64decode(gif))
 
-        res.set_cookie('foo', str(uuid.uuid4()), max_age=60 * 60 * 24 * 365 * 2)
+        res.set_cookie('hlv_fb_imp', str(uuid.uuid4()), max_age=60 * 60 * 24 * 365 * 2)
         return res
 
 @app.errorhandler(404)
