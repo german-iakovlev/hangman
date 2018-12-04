@@ -9,7 +9,7 @@ from flask import (
     redirect,
     url_for
 )
-from flask.ext.restful import (
+from flask_restful import (
     Resource, Api, reqparse
 )
 from hangman import loadWords, chooseWord
