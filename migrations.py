@@ -1,7 +1,5 @@
 import urllib.parse as urlparse
 import os
-import psycopg2
-from peewee import *
 from playhouse.migrate import *
 
 from models import Game, LetterGuessed
@@ -20,13 +18,6 @@ db = PostgresqlDatabase(
     host=HOST,
     port=PORT
 )
-
-# db = PostgresqlDatabase(
-#     'local_db',
-#     user='germaniakovlev',
-#     password='',
-#     host='localhost'
-# )
 
 db.connect()
 db.create_tables([Game, LetterGuessed])
